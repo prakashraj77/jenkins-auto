@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCOUNT_ID = "799997637318"
+        AWS_ACCOUNT_ID = "YOUR-AWS-ACCOUNT-ID"
         REGION = "ap-south-1"
         REPO_NAME = "myapp-repo"
         IMAGE_TAG = "latest"
@@ -12,7 +12,7 @@ pipeline {
 
         stage('Clone Code') {
             steps {
-                git 'https://github.com/YOUR-REPO.git'
+                git 'https://github.com/prakashraj77/jenkins-auto.git'
             }
         }
 
