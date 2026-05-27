@@ -2,19 +2,21 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCOUNT_ID = "799997637318"
+        AWS_ACCOUNT_ID = "799997637318"  // replace with real value
         REGION = "ap-south-1"
-        REPO_NAME = "myapp-repo"
+        REPO_NAME = "myapp-repo"                 // replace with real value
         IMAGE_TAG = "latest"
     }
 
-    stage('Clone Code') {
-    steps {
-        git branch: 'main',
-            credentialsId: 'github-credentials',  // ← the ID you set in Jenkins credentials
-            url: 'https://github.com/prakashraj77/jenkins-auto.git'
-    }
-}
+    stages {
+
+        stage('Clone Code') {
+            steps {
+                git branch: 'main',
+                    credentialsId: 'github-credentials',
+                    url: 'https://github.com/prakashraj77/jenkins-auto.git'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
@@ -34,20 +36,15 @@ pipeline {
 
         stage('Tag Docker Image') {
             steps {
-                sh '''
-                docker tag $REPO_NAME:$IMAGE_TAG \
-                $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:$IMAGE_TAG
-                '''
+                sh 'docker tag $REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:$IMAGE_TAG'
             }
         }
 
         stage('Push Docker Image to ECR') {
             steps {
-                sh '''
-                docker push \
-                $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:$IMAGE_TAG
-                '''
+                sh 'docker push $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO_NAME:$IMAGE_TAG'
             }
         }
-    }
 
+    }
+}
