@@ -2,19 +2,19 @@ pipeline {
     agent any
 
     environment {
-        AWS_ACCOUNT_ID = "YOUR-AWS-ACCOUNT-ID"
+        AWS_ACCOUNT_ID = "799997637318"
         REGION = "ap-south-1"
         REPO_NAME = "myapp-repo"
         IMAGE_TAG = "latest"
     }
 
-    stages {
-
-        stage('Clone Code') {
-            steps {
-                git 'https://github.com/prakashraj77/jenkins-auto.git'
-            }
-        }
+    stage('Clone Code') {
+    steps {
+        git branch: 'main',
+            credentialsId: 'github-credentials',  // ← the ID you set in Jenkins credentials
+            url: 'https://github.com/prakashraj77/jenkins-auto.git'
+    }
+}
 
         stage('Build Docker Image') {
             steps {
